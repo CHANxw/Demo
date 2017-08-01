@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>天狗购物网</title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+        }
+        body{
+            font-size:12px;
+            line-height:1.7;
+            font-family: "Microsoft YaHei",SimSun,'\5b8b\4f53',sans-serif;
+        }
+        li{
+            list-style:none;
+        }
+        a{
+            text-decoration: none;
+        }
+        #content{
+            width:800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        #content h1{
+            color: #0088bb;
+        }
+        #content .item{
+            padding: 20px;
+            margin-bottom:20px;
+        }
+        #content .item h2{
+            font-size: 16px;
+            font-weight:bold;
+            border-bottom:2px solid #0088bb;
+            margin-bottom:10px;
+        }
+        #content .item li{
+            display: inline;
+            margin-right:10px;
+        }
+        #content .item li a img{
+            width: 230px;
+            border:none;
+        }
+        #menu{
+            position: fixed;
+            top:100px;
+            left:50%;
+            margin-left:400px;
+            width:80px;
+        }
+        #menu ul li a{
+            display: block;  //这样才能设置边框啥的
+            margin:5px 0;
+            font-size:14px;
+            font-weight:bold;
+            color: #333;
+            width:80px;
+            height:50px;
+            line-height: 50px;
+            text-align: center;
+        }
+        #menu ul li a:hover,   /*当鼠标滑过*/
+        #menu ul li a.current{   /*当成为焦点时*/
+            color: #ffffff;
+            background-color: #0088bb;
+        }
+        /*解决IE6不兼容fixed属性的方法，在css中加入：*/
+        *html,*html body{
+            background-image:url(about:blank);
+            background-attachment:fixed;
+        }
+        *html menu{
+            position:absolute;
+            top:expression(((e=document.documentElement.scrollTop)?e:document.body.scrollTop)+100+'px');
+        }
+    </style>
+    <script src="jquery.js"></script>
+    <script>
+        $(document).ready(function () { //加载完document在做下一步
+            $(window).scroll(function () {  //获取滚动条的信息
+                var top=$(document).scrollTop(); //获取顶部信息，这样就不用每次都调用函数来获取信息
+                var menu=$('#menu');  //同上
+                var items=$('#content').find('.item')//先获取content在来找item这样效率比('#content .item')高
+                var currentId="";
+                items.each(function () { //用each就可以遍历每一项，不用设置一个for  也不用i这类的。
+                    var m=$(this);   //养成对变量的声明，是个好习惯
+                    var itemTop=m.offset().top;//获取item的top值，返回的是一个对象，里面有top.left.这些
+                    //下面进行判断当前的top和每一层的itemtop比较
+                    //itemTop减掉一百是为了不要整个层走完才切换，快走完下一层内容出来了就可以了
+                    if(top>itemTop-100){
+                        currentId="#"+m.attr('id');   //用attr获取m的id属性。
+                    }else{
+                        return false;//停止循环遍历，跳出each
+                    }
+                    var currentLink=menu.find('.current');
+                    //判断这个currentId是否有值，因为可能top高度小，导致他还是空值
+                    //还有就是判断是不是是不是在link和currentId是不是相等在同一层，因为在同一层就不用变化了；
+                    if(currentId&&currentLink.attr('href')!=currentId){
+                        //找到对应的链接
+                        currentLink.removeClass('current');
+                        menu.find("[href='"+currentId+"']" ).addClass('current');
+                        //注意上面引号的使用方法
+                        //find("[href='#item1']"),href对应的值本来就要加引号，find也需要引号
+                        // 一个是jquery引用DOM需要引号，一个是href自己需要引号。3.0.0版本下需要这么写。
+                    }
+                })
+            })
+        })
+        $(function () {
+            $('#content .item li').hover(function () {
+                $(this).find('img').animate({opacity:"0.5"},300)
+            },function () {
+                $(this).find('img').animate({opacity:"1"},300)
+            })
+        })
+    </script>
+</head>
+<body>
+<div id="menu">
+    <ul>
+        <li><a href="#item1" class="current">1F 男装</a></li>   <!--href锚点 不用name了，直接使用即可-->
+        <li><a href="#item2">2F 女装</a></li>
+        <li><a href="#item3">3F 美妆</a></li>
+        <li><a href="#item4">4F 数码</a></li>
+        <li><a href="#item5">5F 母婴</a></li>
+    </ul>
+</div>
+<div id="content">
+    <h1>天狗购物网</h1>
+    <div id="item1" class="item">
+        <h2>男装 1F</h2>
+        <ul>
+            <li><a href="#"><img src="img/1F.jpg" alt=""></a></li>
+            <li><a href="#"><img src="img/1F.jpg" alt=""></a></li>
+            <li><a href="#"><img src="img/1F.jpg" alt=""></a></li>
+            <li><a href="#"><img src="img/1F.jpg" alt=""></a></li>
+            <li><a href="#"><img src="img/1F.jpg" alt=""></a></li>
+            <li><a href="#"><img src="img/1F.jpg" alt=""></a></li>
+            <li><a href="#"><img src="img/1F.jpg" alt=""></a></li>
+            <li><a href="#"><img src="img/1F.jpg" alt=""></a></li>
+            <li><a href="#"><img src="img/1F.jpg" alt=""></a></li>
+        </ul>
+    </div>
+    <div id="item2" class="item">
+        <h2>女装 2F</h2>
+        <ul>
+            <li><a href="#"><img src="img/2F.jpg" alt=""></a></li>
+            <li><a href="#"><img src="img/2F.jpg" alt=""></a></li>
+            <li><a href="#"><img src="img/2F.jpg" alt=""></a></li>
+            <li><a href="#"><img src="img/2F.jpg" alt=""></a></li>
+            <li><a href="#"><img src="img/2F.jpg" alt=""></a></li>
+            <li><a href="#"><img src="img/2F.jpg" alt=""></a></li>
+            <li><a href="#"><img src="img/2F.jpg" alt=""></a></li>
+            <li><a href="#"><img src="img/2F.jpg" alt=""></a></li>
+            <li><a href="#"><img src="img/2F.jpg" alt=""></a></li>
+        </ul>
+    </div>
+    <div id="item3" class="item">
+        <h2>美妆 3F</h2>
+        <ul>
+            <li><a href="#"><img src="img/3F.jpg" alt=""></a></li>
+            <li><a href="#"><img src="img/3F.jpg" alt=""></a></li>
+            <li><a href="#"><img src="img/3F.jpg" alt=""></a></li>
+            <li><a href="#"><img src="img/3F.jpg" alt=""></a></li>
+            <li><a href="#"><img src="img/3F.jpg" alt=""></a></li>
+            <li><a href="#"><img src="img/3F.jpg" alt=""></a></li>
+            <li><a href="#"><img src="img/3F.jpg" alt=""></a></li>
+            <li><a href="#"><img src="img/3F.jpg" alt=""></a></li>
+            <li><a href="#"><img src="img/3F.jpg" alt=""></a></li>
+        </ul>
+    </div>
+    <div id="item4" class="item">
+        <h2>数码 4F</h2>
+        <ul>
+            <li><a href="#"><img src="img/4F.png" alt=""></a></li>
+            <li><a href="#"><img src="img/4F.png" alt=""></a></li>
+            <li><a href="#"><img src="img/4F.png" alt=""></a></li>
+            <li><a href="#"><img src="img/4F.png" alt=""></a></li>
+            <li><a href="#"><img src="img/4F.png" alt=""></a></li>
+            <li><a href="#"><img src="img/4F.png" alt=""></a></li>
+            <li><a href="#"><img src="img/4F.png" alt=""></a></li>
+            <li><a href="#"><img src="img/4F.png" alt=""></a></li>
+            <li><a href="#"><img src="img/4F.png" alt=""></a></li>
+        </ul>
+    </div>
+    <div id="item5" class="item">
+        <h2>母婴 5F</h2>
+        <ul>
+            <li><a href="#"><img src="img/5F.jpg" alt=""></a></li>
+            <li><a href="#"><img src="img/5F.jpg" alt=""></a></li>
+            <li><a href="#"><img src="img/5F.jpg" alt=""></a></li>
+            <li><a href="#"><img src="img/5F.jpg" alt=""></a></li>
+            <li><a href="#"><img src="img/5F.jpg" alt=""></a></li>
+            <li><a href="#"><img src="img/5F.jpg" alt=""></a></li>
+            <li><a href="#"><img src="img/5F.jpg" alt=""></a></li>
+            <li><a href="#"><img src="img/5F.jpg" alt=""></a></li>
+            <li><a href="#"><img src="img/5F.jpg" alt=""></a></li>
+        </ul>
+    </div>
+</div>
+</body>
+</html>

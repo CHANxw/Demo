@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+        }
+        a{
+            text-decoration: none;
+            color: inherit;
+        }
+        li {
+            list-style: none;
+
+        }
+        .calender {
+            width: 500px;
+            height: 350px;
+            background-color: #fff;
+            -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+            -moz-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);;
+        }
+        .title {
+            position: relative;
+            height: 70px;
+            text-align: center;
+        }
+        .title #prev {
+            display: block;
+            width: 40px;
+            position: absolute;
+            height: 70px;
+            line-height: 70px;
+            top: 0;
+            left: 0;
+        }
+        .title #next {
+            display: block;
+            width: 40px;
+            position: absolute;
+            height: 70px;
+            line-height: 70px;
+            top: 0;
+            right: 0;
+        }
+        .week-list ul {
+            width: 100%;
+            font-family:arial;
+            font-weight:bold;
+            font-size:14px;
+            margin-top: 20px;
+        }
+        .day-list ul {
+            width:100%;
+            font-family:arial;
+            font-weight:bold;
+            font-size:14px;
+        }
+        .main li {
+            width: 14.28%;
+            float: left;
+            height:36px;
+            line-height: 36px;
+            box-sizing:border-box;
+            text-align: center;
+        }
+        .pass {
+            color: #999;
+        }
+        .future {
+            color: #000;
+        }
+        .now {
+            color: #6ac13c;
+            background-color: #e9f8df;
+            border: 1px solid #6ac13c;
+        }
+    </style>
+</head>
+<body>
+<div class="calender">
+    <div class="title">
+        <h1 id="title-month">月份</h1>
+        <h2 id="title-year">年份</h2>
+        <a href="" id="prev"> < </a>
+        <a href="" id="next"> > </a>
+    </div>
+    <hr>
+    <div class="main">
+        <div class="week-list">
+            <ul>
+                <li>星期一</li>
+                <li>星期二</li>
+                <li>星期三</li>
+                <li>星期四</li>
+                <li>星期五</li>
+                <li>星期六</li>
+                <li>星期日</li>
+            </ul>
+        </div>
+        <div class="day-list">
+            <ul id="days">
+
+            </ul>
+        </div>
+    </div>
+</div>
+<script>
+    'use strict'
+    //先确定每个月天数，依据农历和平历的情况分别是lunar 和normal
+    let monthLunar = [31,29,31,30,31,30,31,31,30,31,30,31];
+    let monthNormal = [31,28,31,30,31,30,31,31,30,31,30,31];
+
+    //绑定每个DOM
+    let prev = document.getElementById('prev');
+    let next = document.getElementById('next');
+    let titleMonth = document.getElementById('title-month');
+    let titleYear = document.getElementById('title-year');
+    let days = document.getElementById('days');
+
+    //获取当天的信息，年月日等
+    let date = new Date();
+    let year = date.getFullYear();
+    let month = date.getMonth();
+    let day = date.getDate();
+
+    //日期总数按照月份在数组上进行选择，然后决定当月第一天是周几，后面天数按此排入
+    //获取第一天的起始位置
+    function getDayStart(month,year) {
+        let currentDay = new Date(year, month, 1);
+        return (currentDay.getDay());
+    }
+
+    //获取当月的天数总和
+    function getDaysByMonth(month,year) {
+        if (year%100 == 0) {
+            if (year%400 == 0) {
+                return monthLunar[month];
+            }
+        } else {
+            if (year%4 == 0) {
+                return monthLunar[month];
+            } else {
+                return monthNormal[month];
+            }
+        }
+    }
+
+    //依据当天日期初步渲染日历
+    function initDate() {
+        let str = '';
+        let daysLength = getDaysByMonth(month, year);
+        let dayStart = getDayStart(month,year);
+        let currentClass = '';
+        //添加第一天日期前的空日期
+        for (let i = 1; i < dayStart; i++) {
+            str += '<li></li>';
+        }
+        //添加后面的日期
+        for (let i = 1; i < daysLength; i++) {
+            //判断在当天日期前面的所有可能
+            //同年同月的时候，日期小于当日的
+            //同年不同月，月份小于当月的
+            //不同年，年份小于该年的
+            if ((year == date.getFullYear() && month == date.getMonth() && i < date.getDate())
+                     || (year == date.getFullYear() && month < date.getMonth())
+                     || (year < date.getFullYear())) {
+                currentClass = ' class="pass"';
+            } else if (i == date.getDate() && month == date.getMonth() && year == date.getFullYear()) {
+                currentClass = ' class="now"';
+            } else {
+                currentClass = ' class="future"';
+            }
+            str += '<li' + currentClass + '>' + i + '</li>';
+        }
+        titleMonth.innerHTML = month + 1 + '月';
+        titleYear.innerHTML = year;
+        days.innerHTML = str;
+    }
+    initDate();
+    // 前后月点击交互
+    prev.onclick = function (e) {
+        e.preventDefault();
+        month--;
+        if (month < 0) {
+            year--;
+            month = 11;
+        }
+        initDate();
+    };
+    next.onclick = function (e) {
+        e.preventDefault();
+        month++;
+        if (month > 11) {
+            year++;
+            month = 0;
+        }
+        initDate();
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>flex布局任务</title>
+    <style>
+        /*主要考察了order 的用法，最后一个item在换行到跑到最左边去可以使用order:-1来实现
+        因为默认order为0，数字越小越靠前*/
+        body,div,ul {
+            margin: 10px;
+            padding: 0;
+        }
+        [class^="flex-item-"] {
+            width: 150px;
+            padding: 20px;
+            border: 1px solid #f00;
+        }
+        .container {
+            display: flex;
+            padding: 20px;
+            flex-flow: row wrap;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .flex-item-1 {
+            height: 120px;
+        }
+        .flex-item-2 {
+            height: 100px;
+        }
+        .flex-item-3 {
+            height: 40px;
+        }
+        .flex-item-4 {
+            height: 200px;
+            border-color: #00f;
+        }
+        @media all and (max-width: 640px) {
+            .container {
+                /* 当在中等屏幕中, 导航项目居中显示，并且剩余空间平均分布在列表之间 */
+                align-items: flex-start;
+
+            }
+            .flex-item-4 {
+                order: -1;
+            }
+        }
+        .parent-box1 {
+            display: flex;
+            height: 200px;
+            background-color: #000;
+        }
+        .mid-box1 {
+            width: 50px;
+            height: 50px;
+            margin: auto;
+            /*在Flex容器中，当项目边距设置为“auto”时，
+            设置自动的垂直边距将使该项目完全集中--两个轴--*/
+            background-color: #fff;
+        }
+        li {
+            list-style: none;
+        }
+        .parent-box2 {
+            display: flex;
+            flex-flow: row wrap;
+            /*上面代码相当于写了
+             flex-direction: row; 定义主轴main axis的方向(其实就是定义伸缩方向)
+             row：水平 (ltr从左到右)
+             row-reverse: 和row方向相反，但也是在水平方向伸缩
+             column:垂直 (上到下)
+             column-reverse: 下到上
+
+             flex-wrap: warp; 定义是否多行出现,且定义行的排列,这里的warp是上到下排列 ;wrap-reverse的话会向上排列
+             */
+            justify-content: space-around;
+            /*上面的代码表示有元素换行后的排列方式，
+
+            也就是**伸缩项目**沿**主轴方向**的排列方式
+
+            水平分布:space-around;   -_-_-_-    每个子元素左右的空间相等;
+            居中分布:center;        --_ _ _--  ;
+            全行居中:space-between;  _--_--_     首个元素放置于起点，末尾元素放置于终点 和center 还是有区别的;
+            行首排列:flex-start       _-_-_--    ;
+            行末排列:flex-end         --_-_-_    ;
+            */
+        }
+        .child-item2 {
+            background: tomato;
+            padding: 5px;
+            width: 200px;
+            height: 150px;
+            margin-top: 10px;
+
+            line-height: 150px;
+            color: white;
+            font-weight: bold;
+            font-size: 3em;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <h4>练习1 全居中</h4>
+        <p>子盒水平竖直都居中</p>
+        <div class="parent-box1">
+            <!--父盒子做为flex容器，也就是display：flex; 而且这个盒子只有一个mid-box -->
+            <div class="mid-box1"></div>
+
+        </div>
+    </div>
+    <div>
+        <h4>练习2 多盒子全居中</h4>
+        <p>不仅实现单个盒子的全居中，还要实现列表项目子盒水平竖直都居中</p>
+        <ul class="parent-box2">
+            <li class="child-item2">1</li>
+            <li class="child-item2">2</li>
+            <li class="child-item2">3</li>
+            <li class="child-item2">4</li>
+            <li class="child-item2">5</li>
+            <li class="child-item2">6</li>
+        </ul>
+    </div>
+    <div>
+        <h4>练习3 换行对齐</h4>
+        <p>主要考察了order 的用法，当页面缩小时，控制最后一个item在换行到跑到最左边去可以使用order:-1来实现
+            因为默认order为0，数字越小越靠前</p>
+        <div class="container">
+            <div class="flex-item-1">1</div>
+            <div class="flex-item-2">2</div>
+            <div class="flex-item-3">3</div>
+            <div class="flex-item-4">4</div>
+        </div>
+    </div>
+</body>
+</html>

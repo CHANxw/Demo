@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>二叉树遍历</title>
+    <style>
+        div {
+            padding: 10px;
+            margin: 10px;
+            display: flex;
+            flex-flow: row wrap;
+            justify-content: space-around;
+            border: 1px solid #000;
+            background-color: #ffffff;
+        }
+        .best {
+            width: 600px;
+            height: 200px;
+        }
+    </style>
+</head>
+<body>
+<div class="best" id="parent">
+    <div>
+        <div>
+            <div></div>
+            <div></div>
+        </div>
+        <div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+    <div>
+        <div>
+            <div></div>
+            <div></div>
+        </div>
+        <div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+</div>
+<button onclick="parentBtn()">前遍历开始</button>
+<button onclick="sonBtn()">后遍历开始</button>
+<button onclick="midBtn()">中遍历开始</button>
+<script src="eachTree.js"></script>
+</body>
+</html>

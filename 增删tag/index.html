@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>增删tag和兴趣</title>
+</head>
+<body>
+<div class="tag">
+    <div class="tag-input">
+        <span>tag:</span>
+        <input id="in-text" type="text" placeholder="请输入tag">
+    </div>
+    <p id="alert-msg"></p>
+    <ul id="tag-list">
+    </ul>
+</div>
+<div>
+    <textarea name="" id="hobbys" cols="30" rows="10" placeholder="请输入兴趣爱好，可以用，。回车 空格分割"></textarea>
+    <button onclick="filterHobby()">添加兴趣</button>
+    <button onclick="resetHobby()">重置</button>
+    <ul id="hobby-list">
+    </ul>
+</div>
+<script src="addDel.js"></script>
+</body>
+</html>

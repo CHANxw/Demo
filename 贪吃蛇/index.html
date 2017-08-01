@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<canvas id="can" width="400" height="400" style="background-color:#000;"></canvas>
+<script>
+    //绑定canvas
+    var oCanvas = document.getElementById('can').getContext('2d');
+    //声明一个数组，存放贪吃蛇数据
+    //提供默认值，也是就是贪吃蛇进入游戏后出现的第一个位置
+    var sBody = [42,41];
+    //声明一个状态变化量，这个状态变化量是用来存放蛇是向那个方向的运动的;
+    var stats = 1;
+    //声明一个临时变量，保存新添加的贪吃蛇的小方块，
+    var nBody;
+    //声明一个临时变量，保存食物的小方块参数;
+    var fool = 43;
+
+    //生成小方块的函数
+    function draw(t,c){
+        oCanvas.fillStyle=c;
+        oCanvas.fillRect(t%20*20+1,~~(t/20)*20+1,18,18);
+    }
+    //添加按键事件
+    document.onkeydown=function(e){
+        //依据sBody的前两个数据可以判断之前的运行状态
+        //依据不同的状态设置stats
+        stats=sBody[1]-sBody[0]==(nBody=[-1,-20,1,20][(e||event).keyCode-37]||stats)?stats:nBody;
+    };
+    //渲染小方块函数
+    !function () {
+        console.log('a');
+        sBody.unshift(nBody = sBody[0] + stats);//根据状态变化量添加新的小方块,且保存这个状态量后面方便进行判断
+        //判断新添加的状态
+        //当小方块已经存在，就是接触了自己的身体；当方块触碰到上下边界
+        if(sBody.indexOf(nBody,1)>0 || nBody<0 || nBody>399
+                //在左右方向移动时，触碰左右边界时
+                ||stats==1&&nBody%20 == 0 || stats==-1&&nBody%20==19) {
+            return alert('游戏结束');
+        }
+        //渲染蛇身
+        draw(nBody,'green');
+        //渲染食物先判断食物==nBody,true的时候才添加新的随机食物,
+        // 否则蛇Body的最后一个小方块要变成黑色小方块还有脱离sBody数组
+        if (nBody == fool) {
+            //创建新的食物，判断fool是否是sBody的一部分，是就要一直创建
+            while (sBody.indexOf(fool) >= 0) {
+                fool = ~~(Math.random()*400);
+            }
+            draw(fool, 'yellow');
+        } else {draw(sBody.pop(),'black')}
+        setTimeout(arguments.callee,100); //这样设置参数可以实现重载；
+    }();
+
+//    var oCanvas=document.getElementById('can').getContext('2d'),sBody=[42,41],stats=1,nBody,fool=43;
+//    function draw(t,c){
+//        oCanvas.fillStyle=c;
+//        oCanvas.fillRect(t%20*20+1,~~(t/20)*20+1,18,18);
+//    }
+//    document.onkeydown=function(e){
+//        stats=sBody[1]-sBody[0]==(nBody=[-1,-20,1,20][(e||event).keyCode-37]||stats)?stats:nBody
+//    };
+//    -function () {
+//        sBody.unshift(nBody = sBody[0] + stats);
+//        if(sBody.indexOf(nBody,1)>0||nBody<0||nBody>399||stats==1&&nBody%20==0||stats==-1&&nBody%20==19) return alert('游戏结束');
+//        draw(nBody,'green');
+//        if (nBody == fool) {
+//            while (sBody.indexOf(~~(Math.random()*400)) >= 0)
+//                draw(fool, 'yellow');
+//        } else draw(sBody.pop(),'black')
+//        setTimeout(arguments.callee,100); //这样设置参数可以实现重载；
+//    }();
+</script>
+</body>
+</html>
